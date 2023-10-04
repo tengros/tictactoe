@@ -1,21 +1,27 @@
 public class Player {
+    protected char letter;
     private String name;
-    private char gamePiece;
 
 
     public Player(String name) {
         this.name = name;
+
     }
+
 
     public String getName() {
         return name;
     }
 
+    public String toString() {
+        return getName();
+    }
+
     public char getGamePiece() {
-        return gamePiece;
+        return letter;
     }
 
     public void setGamePiece(char gamePiece) {
-        this.gamePiece = gamePiece;
+        this.letter = gamePiece;
     }
 }

@@ -37,21 +37,24 @@ public class Main {
                  it's respective         4 | 5 | 6 \s
                  position on the        ---+---+---
                  game board.             7 | 8 | 9  \s
-               
+                               
                 """);
         System.out.println("Tic-Tac-Toe, Let's Go!");
         System.out.println("The board is now empty, where do you want to place your letter? ");
-        Board.printEmptyBoard1();
+        Board.printBoard();
 
-
-
+        while (true) {
+            game.placeLetter(game.getCurrentPlayer(), sc.nextInt());
+           String result = Game.checkWinner();
+           System.out.println(result);
+           if(!result.equals("No winner yet.")) {
+               break;
+           }
+            game.switchPlayers();
+        }
 
 
     }
-
-
-
-
 
 
 }
