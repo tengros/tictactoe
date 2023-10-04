@@ -6,10 +6,9 @@ public class Game {
     static ArrayList<Integer> secondPlayerPositions = new ArrayList<>();
 
     private int choice;
-    Player firstPlayer;
-    Player secondPlayer;
+    static Player firstPlayer;
+    static Player secondPlayer;
     private Player currentPlayer;
-    private String currentPlayer2;
     private boolean validMove = true;
 
     private ArrayList<Player> players;
@@ -20,18 +19,6 @@ public class Game {
 
     public Player getCurrentPlayer() {
         return currentPlayer;
-    }
-
-    public int readIntFromUser() {
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            try {
-                return scanner.nextInt();
-            } catch (InputMismatchException e) {
-                System.out.println("Felaktig input! Vänligen ange en siffra.");
-                scanner.next(); // för att rensa bort den felaktiga inputen
-            }
-        }
     }
 
     public static boolean posTaken(int position) {
@@ -45,12 +32,12 @@ public class Game {
     public void createPlayers(Scanner sc) {
         System.out.print("Name of player 1: ");
         String input = sc.nextLine();
-        Player p1 = new Player(input);
+        Player p1 = new Player(input, 0);
         players.add(p1);
 
         System.out.print("Name of player 2: ");
         input = sc.nextLine();
-        Player p2 = new Player(input);
+        Player p2 = new Player(input, 0);
         players.add(p2);
     }
 
@@ -76,7 +63,17 @@ public class Game {
         }
     }
 
-    public void placeLetter(Player currentPlayer) {
+    public void clearLists() {
+        firstPlayerPositions.clear();
+        secondPlayerPositions.clear();
+
+    }
+
+    public void newBoard() {
+        Board newBoard = new Board();
+    }
+
+    public void placeLetter(Player currentPlayer, char[][] board) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             try {
@@ -110,49 +107,49 @@ public class Game {
         switch (choice) {
 
             case 1:
-                Board.board[0][1] = currentPlayer.getGamePiece();
+                board[0][1] = currentPlayer.getGamePiece();
                 System.out.println();
-                Board.printBoard();
+                Board.printBoard(board);
                 break;
             case 2:
-                Board.board[0][5] = currentPlayer.getGamePiece();
+                board[0][5] = currentPlayer.getGamePiece();
                 System.out.println();
-                Board.printBoard();
+                Board.printBoard(board);
                 break;
             case 3:
-                Board.board[0][9] = currentPlayer.getGamePiece();
+                board[0][9] = currentPlayer.getGamePiece();
                 System.out.println();
-                Board.printBoard();
+                Board.printBoard(board);
                 break;
             case 4:
-                Board.board[2][1] = currentPlayer.getGamePiece();
+                board[2][1] = currentPlayer.getGamePiece();
                 System.out.println();
-                Board.printBoard();
+                Board.printBoard(board);
                 break;
             case 5:
-                Board.board[2][5] = currentPlayer.getGamePiece();
+                board[2][5] = currentPlayer.getGamePiece();
                 System.out.println();
-                Board.printBoard();
+                Board.printBoard(board);
                 break;
             case 6:
-                Board.board[2][9] = currentPlayer.getGamePiece();
+                board[2][9] = currentPlayer.getGamePiece();
                 System.out.println();
-                Board.printBoard();
+                Board.printBoard(board);
                 break;
             case 7:
-                Board.board[4][1] = currentPlayer.getGamePiece();
+                board[4][1] = currentPlayer.getGamePiece();
                 System.out.println();
-                Board.printBoard();
+                Board.printBoard(board);
                 break;
             case 8:
-                Board.board[4][5] = currentPlayer.getGamePiece();
+                board[4][5] = currentPlayer.getGamePiece();
                 System.out.println();
-                Board.printBoard();
+                Board.printBoard(board);
                 break;
             case 9:
-                Board.board[4][9] = currentPlayer.getGamePiece();
+                board[4][9] = currentPlayer.getGamePiece();
                 System.out.println();
-                Board.printBoard();
+                Board.printBoard(board);
                 break;
             default:
                 System.out.println("Incorrect enter! Please try again!");
@@ -183,9 +180,15 @@ public class Game {
 
         for (List<Integer> l : winning) {
             if (firstPlayerPositions.containsAll(l)) {
-                return "Tic-Tac-Toe - First player won!";
+                System.out.println("Tic-Tac-Toe - " + firstPlayer.getName() + " won the game!");
+                firstPlayer.incrementNumberOfWins();
+                return "One more time, right?";
             } else if (secondPlayerPositions.containsAll(l)) {
-                return "Tic-Tac-Toe - Second player won!";
+                System.out.println("Tic-Tac-Toe - " + secondPlayer.getName() + " won the game!");
+                secondPlayer.incrementNumberOfWins();
+                return "One more time, right?";
+
+
             }
         }
 

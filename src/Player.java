@@ -1,13 +1,22 @@
 public class Player {
     protected char letter;
     private String name;
+    int numberOfWins = 0;
 
 
-    public Player(String name) {
+    public Player(String name, int numberOfWins) {
         this.name = name;
-
+        this.numberOfWins = numberOfWins;
     }
 
+    public int getNumberOfWinning() {
+        return numberOfWins;
+    }
+
+    public void incrementNumberOfWins() {
+        numberOfWins++;
+        System.out.println(getName() + " has won " + numberOfWins + " times :)");
+    }
 
     public String getName() {
         return name;
