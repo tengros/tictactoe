@@ -9,6 +9,8 @@ public class Game {
     Player firstPlayer;
     Player secondPlayer;
     private Player currentPlayer;
+    private String currentPlayer2;
+    private boolean validMove = true;
 
     private ArrayList<Player> players;
 
@@ -18,6 +20,26 @@ public class Game {
 
     public Player getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    public int readIntFromUser() {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            try {
+                return scanner.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Felaktig input! Vänligen ange en siffra.");
+                scanner.next(); // för att rensa bort den felaktiga inputen
+            }
+        }
+    }
+
+    public static boolean posTaken(int position) {
+        if (firstPlayerPositions.contains(position) || secondPlayerPositions.contains(position)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void createPlayers(Scanner sc) {
@@ -43,61 +65,98 @@ public class Game {
     }
 
     public void switchPlayers() {
-        if (currentPlayer == players.get(0)) {
-            currentPlayer = players.get(1);
-            System.out.println("Good move, now it's " + getCurrentPlayer() + "s turn!");
-        } else {
-            currentPlayer = players.get(0);
-            System.out.println("Good move, now it's " + getCurrentPlayer() + "s turn!");
+        if (validMove) {
+            if (currentPlayer == players.get(0)) {
+                currentPlayer = players.get(1);
+                System.out.println("Good move, now it's " + getCurrentPlayer() + "s turn!");
+            } else {
+                currentPlayer = players.get(0);
+                System.out.println("Good move, now it's " + getCurrentPlayer() + "s turn!");
+            }
         }
     }
 
-    public void placeLetter(Player currentPlayer, int choice) {
+    public void placeLetter(Player currentPlayer) {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            try {
 
-        if (currentPlayer.equals(firstPlayer)) {
-            firstPlayerPositions.add(choice);
-        } else if (currentPlayer.equals(secondPlayer)) {
-            secondPlayerPositions.add(choice);
+                choice = scanner.nextInt();
+
+                if (choice >= 1 && choice <= 9) {
+                    if (!posTaken(choice)) {
+                        if (currentPlayer.equals(firstPlayer)) {
+                            firstPlayerPositions.add(choice);
+                        } else if (currentPlayer.equals(secondPlayer)) {
+                            secondPlayerPositions.add(choice);
+                        }
+                        validMove = true;
+                        break;
+
+                    } else {
+                        System.out.println("Position already taken, please try again!");
+                    }
+
+                } else {
+                    System.out.println("Invalid choice, try again!");
+                }
+
+            } catch (InputMismatchException e) {
+                System.out.println("Incorrect enter! Please try again!");
+                scanner.nextLine();
+            }
         }
+
         switch (choice) {
+
             case 1:
                 Board.board[0][1] = currentPlayer.getGamePiece();
+                System.out.println();
                 Board.printBoard();
                 break;
             case 2:
                 Board.board[0][5] = currentPlayer.getGamePiece();
+                System.out.println();
                 Board.printBoard();
                 break;
             case 3:
                 Board.board[0][9] = currentPlayer.getGamePiece();
+                System.out.println();
                 Board.printBoard();
                 break;
             case 4:
                 Board.board[2][1] = currentPlayer.getGamePiece();
+                System.out.println();
                 Board.printBoard();
                 break;
             case 5:
                 Board.board[2][5] = currentPlayer.getGamePiece();
+                System.out.println();
                 Board.printBoard();
                 break;
             case 6:
                 Board.board[2][9] = currentPlayer.getGamePiece();
+                System.out.println();
                 Board.printBoard();
                 break;
             case 7:
                 Board.board[4][1] = currentPlayer.getGamePiece();
+                System.out.println();
                 Board.printBoard();
                 break;
             case 8:
                 Board.board[4][5] = currentPlayer.getGamePiece();
+                System.out.println();
                 Board.printBoard();
                 break;
             case 9:
                 Board.board[4][9] = currentPlayer.getGamePiece();
+                System.out.println();
                 Board.printBoard();
                 break;
             default:
                 System.out.println("Incorrect enter! Please try again!");
+                validMove = false;
                 break;
         }
     }
@@ -124,9 +183,9 @@ public class Game {
 
         for (List<Integer> l : winning) {
             if (firstPlayerPositions.containsAll(l)) {
-                return "First player won!";
+                return "Tic-Tac-Toe - First player won!";
             } else if (secondPlayerPositions.containsAll(l)) {
-                return "Second player won!";
+                return "Tic-Tac-Toe - Second player won!";
             }
         }
 
@@ -134,7 +193,7 @@ public class Game {
             return "It's a draw!";
         }
 
-        return "No winner yet.";
+        return "";
     }
 }
 

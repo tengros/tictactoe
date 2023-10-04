@@ -44,12 +44,12 @@ public class Main {
         Board.printBoard();
 
         while (true) {
-            game.placeLetter(game.getCurrentPlayer(), sc.nextInt());
-           String result = Game.checkWinner();
-           System.out.println(result);
-           if(!result.equals("No winner yet.")) {
-               break;
-           }
+            game.placeLetter(game.getCurrentPlayer());
+            String result = Game.checkWinner();
+            System.out.println(result);
+            if (!result.equals("")) {
+                break;
+            }
             game.switchPlayers();
         }
 
