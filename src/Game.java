@@ -50,37 +50,35 @@ public class Game {
         System.out.print("Name of player 2: X-O-Matic");
         Player p2 = new Player("X-O-Matic", 0);
         players.add(p2);
+        firstPlayer = players.get(0);
+        secondPlayer = players.get(1);
+        firstPlayer.setGamePiece('X');
+        secondPlayer.setGamePiece('O');
+        System.out.println();
+        System.out.println(firstPlayer.getName() + " starts the game using " + firstPlayer.getGamePiece());
+        currentPlayer = firstPlayer;
     }
 
     public void computerPlaceLetter(Player currentPlayer, char[][] board) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            try {
-                int randomNumber;
-                Random random = new Random();
-                choice = randomNumber = random.nextInt(9) + 1;
 
-                if (choice >= 1 && choice <= 9) {
-                    if (!posTaken(choice)) {
-                        if (currentPlayer.equals(firstPlayer)) {
-                            firstPlayerPositions.add(choice);
-                        } else if (currentPlayer.equals(secondPlayer)) {
-                            secondPlayerPositions.add(choice);
-                        }
-                        validMove = true;
-                        break;
+            int randomNumber;
+            Random random = new Random();
+            choice = randomNumber = random.nextInt(9) + 1;
 
-                    } else {
-                        System.out.println("Position already taken, please try again!");
+            if (choice >= 1 && choice <= 9) {
+                if (!posTaken(choice)) {
+                    if (currentPlayer.equals(firstPlayer)) {
+                        firstPlayerPositions.add(choice);
+                    } else if (currentPlayer.equals(secondPlayer)) {
+                        secondPlayerPositions.add(choice);
                     }
+                    validMove = true;
+                    break;
 
-                } else {
-                    System.out.println("Invalid choice, try again!");
                 }
 
-            } catch (InputMismatchException e) {
-                System.out.println("Incorrect enter! Please try again!");
-                scanner.nextLine();
             }
         }
 
@@ -166,11 +164,6 @@ public class Game {
         secondPlayerPositions.clear();
 
     }
-
-    public void newBoard() {
-        Board newBoard = new Board();
-    }
-
 
 
     public void placeLetter(Player currentPlayer, char[][] board) {
@@ -258,6 +251,39 @@ public class Game {
         }
     }
 
+    public void playGameWithComputer(char[][] board) {
+        while (true) {
+            placeLetter(getCurrentPlayer(), board);
+            String result = Game.checkWinner();
+            System.out.println(result);
+            if (!result.isEmpty()) {
+                break;
+            }
+            switchPlayers();
+            computerPlaceLetter(getCurrentPlayer(), board);
+            result = Game.checkWinner();
+            System.out.println(result);
+            if (!result.isEmpty()) {
+                break;
+            }
+            switchPlayers();
+        }
+    }
+    public void playGameTwoPlayers (char[][] board) {
+
+            while (true) {
+                placeLetter(getCurrentPlayer(), board);
+                String result = Game.checkWinner();
+                System.out.println(result);
+                if (!result.isEmpty()) {
+                    break;
+                }
+                switchPlayers();
+
+            }
+        }
+
+
     public static String checkWinner() {
         List<Integer> topRow = Arrays.asList(1, 2, 3);
         List<Integer> midRow = Arrays.asList(4, 5, 6);
@@ -298,6 +324,91 @@ public class Game {
 
         return "";
     }
+
+
+    public boolean playAgain(Scanner sc) {
+        boolean playAgain2 = true;
+        do {
+            try {
+                System.out.println("Do you want to play again?");
+                System.out.println("1. Yes");
+                System.out.println("2. No");
+                int playAgain = sc.nextInt();
+                if (playAgain == 2) {
+                    playAgain2 = false;
+                    System.out.println("Thank you for playing. Have a nice day :-)");
+                    break;
+                } else if (playAgain == 1) {
+                    playAgain2 = true;
+                } else {
+                    System.out.println("Not a valid choice");
+                    playAgain2 = false;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Incorrect input! Please try again!");
+                playAgain2 = false;
+                sc.nextLine();
+            }
+        } while (!playAgain2);
+
+        return playAgain2;
+    }
+
+    public void rules() {
+        System.out.println("""
+                                      
+                                (--How to place your letters--)
+                                                     
+                 Each digit              1 | 2 | 3 \s
+                 representants          ---+---+---
+                 it's respective         4 | 5 | 6 \s
+                 position on the        ---+---+---
+                 game board.             7 | 8 | 9  \s
+                               
+                """);
+    }
+
+    public void onePlayer(Scanner sc) {
+
+        createPlayerAndComputer(sc);
+        System.out.println();
+        rules();
+        while (true) {
+            System.out.println("Tic-Tac-Toe, Let's Go!");
+            clearLists();
+            char[][] board = new Board().newBoard();
+            System.out.println("The board is now empty, where do you want to place your letter " + getCurrentPlayer() + " ?");
+            Board.printBoard(board);
+            playGameWithComputer(board);
+            if (!playAgain(sc)) {
+                break;
+            }
+        }
+
+
+    }
+    public void twoPlayers(Scanner sc) {
+
+        createPlayers(sc);
+        System.out.println();
+        rules();
+        System.out.println();
+        while (true) {
+            shufflePlayers();
+            System.out.println("Tic-Tac-Toe, Let's Go!");
+            clearLists();
+            char[][] board = new Board().newBoard();
+            System.out.println("The board is now empty, where do you want to place your letter " + getCurrentPlayer() + " ?");
+            Board.printBoard(board);
+            playGameTwoPlayers(board);
+            if (!playAgain(sc)) {
+                break;
+            }
+        }
+
+
+    }
 }
+
 
 
