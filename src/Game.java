@@ -41,6 +41,104 @@ public class Game {
         players.add(p2);
     }
 
+    public void createPlayerAndComputer(Scanner sc) {
+        System.out.print("Name of player 1: ");
+        String input = sc.nextLine();
+        Player p1 = new Player(input, 0);
+        players.add(p1);
+
+        System.out.print("Name of player 2: X-O-Matic");
+        Player p2 = new Player("X-O-Matic", 0);
+        players.add(p2);
+    }
+
+    public void computerPlaceLetter(Player currentPlayer, char[][] board) {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            try {
+                int randomNumber;
+                Random random = new Random();
+                choice = randomNumber = random.nextInt(9) + 1;
+
+                if (choice >= 1 && choice <= 9) {
+                    if (!posTaken(choice)) {
+                        if (currentPlayer.equals(firstPlayer)) {
+                            firstPlayerPositions.add(choice);
+                        } else if (currentPlayer.equals(secondPlayer)) {
+                            secondPlayerPositions.add(choice);
+                        }
+                        validMove = true;
+                        break;
+
+                    } else {
+                        System.out.println("Position already taken, please try again!");
+                    }
+
+                } else {
+                    System.out.println("Invalid choice, try again!");
+                }
+
+            } catch (InputMismatchException e) {
+                System.out.println("Incorrect enter! Please try again!");
+                scanner.nextLine();
+            }
+        }
+
+        switch (choice) {
+
+            case 1:
+                board[0][1] = currentPlayer.getGamePiece();
+                System.out.println();
+                Board.printBoard(board);
+                break;
+            case 2:
+                board[0][5] = currentPlayer.getGamePiece();
+                System.out.println();
+                Board.printBoard(board);
+                break;
+            case 3:
+                board[0][9] = currentPlayer.getGamePiece();
+                System.out.println();
+                Board.printBoard(board);
+                break;
+            case 4:
+                board[2][1] = currentPlayer.getGamePiece();
+                System.out.println();
+                Board.printBoard(board);
+                break;
+            case 5:
+                board[2][5] = currentPlayer.getGamePiece();
+                System.out.println();
+                Board.printBoard(board);
+                break;
+            case 6:
+                board[2][9] = currentPlayer.getGamePiece();
+                System.out.println();
+                Board.printBoard(board);
+                break;
+            case 7:
+                board[4][1] = currentPlayer.getGamePiece();
+                System.out.println();
+                Board.printBoard(board);
+                break;
+            case 8:
+                board[4][5] = currentPlayer.getGamePiece();
+                System.out.println();
+                Board.printBoard(board);
+                break;
+            case 9:
+                board[4][9] = currentPlayer.getGamePiece();
+                System.out.println();
+                Board.printBoard(board);
+                break;
+            default:
+                System.out.println("Incorrect enter! Please try again!");
+                validMove = false;
+                break;
+        }
+    }
+
+
     public void shufflePlayers() {
         Collections.shuffle(players);
         firstPlayer = players.get(0);
@@ -72,6 +170,8 @@ public class Game {
     public void newBoard() {
         Board newBoard = new Board();
     }
+
+
 
     public void placeLetter(Player currentPlayer, char[][] board) {
         Scanner scanner = new Scanner(System.in);

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -44,6 +45,7 @@ public class Main {
                                
                 """);
         do {
+            playAgain2 = true;
             game.shufflePlayers();
 
             System.out.println("Tic-Tac-Toe, Let's Go!");
@@ -62,18 +64,32 @@ public class Main {
                 }
                 game.switchPlayers();
             }
-            System.out.println("Do you want to play again?");
-            System.out.println("1. Yes");
-            System.out.println("2. No");
-            playAgain = sc.nextInt();
-            if (playAgain == 2) {
-                playAgain2 = false;
-                break;
-            } else if (playAgain < 1 || playAgain > 2) {
-                System.out.println("Not a valid choice");
-            }
 
-        } while (playAgain2);
+            do {
+                try {
+                    System.out.println("Do you want to play again?");
+                    System.out.println("1. Yes");
+                    System.out.println("2. No");
+                    playAgain = sc.nextInt();
+                    if (playAgain == 2) {
+                        playAgain2 = false;
+                        System.out.println("Thank you for playing. Have a nice day :-)");
+                        break;
+                    } else if (playAgain == 1) {
+                        playAgain2 = true;
+                    }
+                    if (playAgain != 1 && playAgain != 2) {
+                        playAgain2 = false;
+                        System.out.println("Not a valid choice");
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Incorrect enter! Please try again!");
+                    playAgain2 = false;
+                    sc.nextLine();
+                }
+            } while (playAgain2 == false);
+
+        } while (playAgain2 == true);
 
 
     }
