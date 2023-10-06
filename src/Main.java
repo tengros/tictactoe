@@ -40,12 +40,12 @@ public class Main {
                 switch (choice) {
                     case 1:
                         Game game = new Game();
-                        game.onePlayer(sc);
+                        game.playGameWithComputer(sc);
                         break;
 
                     case 2:
                         game = new Game();
-                        game.twoPlayers(sc);
+                        game.playGameTwoPlayers(sc);
                         break;
                 }
 

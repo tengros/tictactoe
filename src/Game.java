@@ -136,36 +136,6 @@ public class Game {
         }
     }
 
-
-    public void shufflePlayers() {
-        Collections.shuffle(players);
-        firstPlayer = players.get(0);
-        secondPlayer = players.get(1);
-        firstPlayer.setGamePiece('X');
-        secondPlayer.setGamePiece('O');
-        System.out.println(firstPlayer.getName() + " starts the game using " + firstPlayer.getGamePiece());
-        currentPlayer = firstPlayer;
-    }
-
-    public void switchPlayers() {
-        if (validMove) {
-            if (currentPlayer == players.get(0)) {
-                currentPlayer = players.get(1);
-                System.out.println("Good move, now it's " + getCurrentPlayer() + "s turn!");
-            } else {
-                currentPlayer = players.get(0);
-                System.out.println("Good move, now it's " + getCurrentPlayer() + "s turn!");
-            }
-        }
-    }
-
-    public void clearLists() {
-        firstPlayerPositions.clear();
-        secondPlayerPositions.clear();
-
-    }
-
-
     public void placeLetter(Player currentPlayer, char[][] board) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -251,26 +221,54 @@ public class Game {
         }
     }
 
-    public void playGameWithComputer(char[][] board) {
-        while (true) {
-            placeLetter(getCurrentPlayer(), board);
-            String result = Game.checkWinner();
-            System.out.println(result);
-            if (!result.isEmpty()) {
-                break;
-            }
-            switchPlayers();
-            computerPlaceLetter(getCurrentPlayer(), board);
-            result = Game.checkWinner();
-            System.out.println(result);
-            if (!result.isEmpty()) {
-                break;
-            }
-            switchPlayers();
-        }
-    }
-    public void playGameTwoPlayers (char[][] board) {
+    public void playGameWithComputer(Scanner sc) {
 
+        createPlayerAndComputer(sc);
+        System.out.println();
+        rules();
+        while (true) {
+            System.out.println("Tic-Tac-Toe, Let's Go!");
+            clearLists();
+            char[][] board = new Board().newBoard();
+            System.out.println("The board is now empty, where do you want to place your letter " + getCurrentPlayer() + " ?");
+            Board.printBoard(board);
+            while (true) {
+                placeLetter(getCurrentPlayer(), board);
+                String result = Game.checkWinner();
+                System.out.println(result);
+                if (!result.isEmpty()) {
+                    break;
+                }
+                switchPlayers();
+                computerPlaceLetter(getCurrentPlayer(), board);
+                result = Game.checkWinner();
+                System.out.println(result);
+                if (!result.isEmpty()) {
+                    break;
+                }
+                switchPlayers();
+            }
+            if (!playAgain(sc)) {
+                break;
+            }
+        }
+
+
+    }
+
+    public void playGameTwoPlayers(Scanner sc) {
+
+        createPlayers(sc);
+        System.out.println();
+        rules();
+        System.out.println();
+        while (true) {
+            shufflePlayers();
+            System.out.println("Tic-Tac-Toe, Let's Go!");
+            clearLists();
+            char[][] board = new Board().newBoard();
+            System.out.println("The board is now empty, where do you want to place your letter " + getCurrentPlayer() + " ?");
+            Board.printBoard(board);
             while (true) {
                 placeLetter(getCurrentPlayer(), board);
                 String result = Game.checkWinner();
@@ -281,8 +279,27 @@ public class Game {
                 switchPlayers();
 
             }
+            if (!playAgain(sc)) {
+                break;
+            }
         }
 
+
+    }
+
+    public void rules() {
+        System.out.println("""
+                                      
+                                (--How to place your letters--)
+                                                     
+                 Each digit              1 | 2 | 3 \s
+                 representants          ---+---+---
+                 it's respective         4 | 5 | 6 \s
+                 position on the        ---+---+---
+                 game board.             7 | 8 | 9  \s
+                               
+                """);
+    }
 
     public static String checkWinner() {
         List<Integer> topRow = Arrays.asList(1, 2, 3);
@@ -325,6 +342,33 @@ public class Game {
         return "";
     }
 
+    public void shufflePlayers() {
+        Collections.shuffle(players);
+        firstPlayer = players.get(0);
+        secondPlayer = players.get(1);
+        firstPlayer.setGamePiece('X');
+        secondPlayer.setGamePiece('O');
+        System.out.println(firstPlayer.getName() + " starts the game using " + firstPlayer.getGamePiece());
+        currentPlayer = firstPlayer;
+    }
+
+    public void switchPlayers() {
+        if (validMove) {
+            if (currentPlayer == players.get(0)) {
+                currentPlayer = players.get(1);
+                System.out.println("Good move, now it's " + getCurrentPlayer() + "s turn!");
+            } else {
+                currentPlayer = players.get(0);
+                System.out.println("Good move, now it's " + getCurrentPlayer() + "s turn!");
+            }
+        }
+    }
+
+    public void clearLists() {
+        firstPlayerPositions.clear();
+        secondPlayerPositions.clear();
+
+    }
 
     public boolean playAgain(Scanner sc) {
         boolean playAgain2 = true;
@@ -354,61 +398,8 @@ public class Game {
         return playAgain2;
     }
 
-    public void rules() {
-        System.out.println("""
-                                      
-                                (--How to place your letters--)
-                                                     
-                 Each digit              1 | 2 | 3 \s
-                 representants          ---+---+---
-                 it's respective         4 | 5 | 6 \s
-                 position on the        ---+---+---
-                 game board.             7 | 8 | 9  \s
-                               
-                """);
-    }
-
-    public void onePlayer(Scanner sc) {
-
-        createPlayerAndComputer(sc);
-        System.out.println();
-        rules();
-        while (true) {
-            System.out.println("Tic-Tac-Toe, Let's Go!");
-            clearLists();
-            char[][] board = new Board().newBoard();
-            System.out.println("The board is now empty, where do you want to place your letter " + getCurrentPlayer() + " ?");
-            Board.printBoard(board);
-            playGameWithComputer(board);
-            if (!playAgain(sc)) {
-                break;
-            }
-        }
 
 
-    }
-    public void twoPlayers(Scanner sc) {
-
-        createPlayers(sc);
-        System.out.println();
-        rules();
-        System.out.println();
-        while (true) {
-            shufflePlayers();
-            System.out.println("Tic-Tac-Toe, Let's Go!");
-            clearLists();
-            char[][] board = new Board().newBoard();
-            System.out.println("The board is now empty, where do you want to place your letter " + getCurrentPlayer() + " ?");
-            Board.printBoard(board);
-            playGameTwoPlayers(board);
-            if (!playAgain(sc)) {
-                break;
-            }
-        }
-
-
-    }
 }
-
 
 

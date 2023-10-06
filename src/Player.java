@@ -9,22 +9,10 @@ public class Player {
         this.numberOfWins = numberOfWins;
     }
 
-    public int getNumberOfWinning() {
-        return numberOfWins;
-    }
-
-    public void incrementNumberOfWins() {
-        numberOfWins++;
-        System.out.println(getName() + " has won " + numberOfWins + " times :)");
-    }
-
     public String getName() {
         return name;
     }
 
-    public String toString() {
-        return getName();
-    }
 
     public char getGamePiece() {
         return letter;
@@ -32,5 +20,14 @@ public class Player {
 
     public void setGamePiece(char gamePiece) {
         this.letter = gamePiece;
+    }
+
+    public void incrementNumberOfWins() {
+        numberOfWins++;
+        System.out.println(getName() + " has won " + numberOfWins + " times :)");
+    }
+
+    public String toString() {
+        return getName();
     }
 }
