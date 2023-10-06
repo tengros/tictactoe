@@ -25,42 +25,40 @@ public class Main {
                        Unleash Your Xs and Os - Tic-Tac-Toe, Let's Go!
                 """);
 
-        do {
-
-            try {
-
-                System.out.println(""" 
+            do {
+                try {
+                    System.out.println(""" 
                         How many players?
                         1. One Player
                         2. Two players
                         """);
 
-                choice = sc.nextInt();
-                sc.nextLine();
-                switch (choice) {
-                    case 1:
-                        Game game = new Game();
-                        game.playGameWithComputer(sc);
-                        break;
+                    choice = sc.nextInt();
+                    sc.nextLine();
 
-                    case 2:
-                        game = new Game();
-                        game.playGameTwoPlayers(sc);
-                        break;
+                    switch (choice) {
+                        case 1:
+                            Game game = new Game(choice);
+                            game.playGame(sc);
+                            break;
+
+                        case 2:
+                            game = new Game(choice);
+                            game.playGame(sc);
+                            break;
+                    }
+
+                    if (choice != 1 && choice != 2) {
+                        System.out.println("Not a valid choice!");
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Incorrect input! Please try again!");
+                    sc.nextLine();
                 }
-
-                if (choice != 1 && choice != 2) {
-                    System.out.println("Not a valid choice!");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Incorrect input! Please try again!");
-                sc.nextLine();
-            }
-        } while (choice != 1 && choice != 2);
-
-
+            } while (choice != 1 && choice != 2);
+        }
 
     }
-    }
+
 
 

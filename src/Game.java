@@ -2,10 +2,12 @@ import java.util.*;
 
 public class Game {
 
+    Scanner sc = new Scanner(System.in);
+
     static ArrayList<Integer> firstPlayerPositions = new ArrayList<>();
     static ArrayList<Integer> secondPlayerPositions = new ArrayList<>();
 
-    private int choice;
+    public int choice;
     static Player firstPlayer;
     static Player secondPlayer;
     private Player currentPlayer;
@@ -13,7 +15,9 @@ public class Game {
 
     private ArrayList<Player> players;
 
-    public Game() {
+
+    public Game(int choice) {
+        this.choice = choice;
         players = new ArrayList<>();
     }
 
@@ -30,33 +34,26 @@ public class Game {
     }
 
     public void createPlayers(Scanner sc) {
+
         System.out.print("Name of player 1: ");
         String input = sc.nextLine();
-        Player p1 = new Player(input, 0);
+        Player p1 = new Player(input, 'X', 0);
+        firstPlayer = p1;
         players.add(p1);
 
-        System.out.print("Name of player 2: ");
-        input = sc.nextLine();
-        Player p2 = new Player(input, 0);
-        players.add(p2);
-    }
+        if (choice == 1) {
+            System.out.print("Name of player 2: X-O-Matic");
+            Player p2 = new Player("X-O-Matic", 'O', 0);
+            secondPlayer = p2;
+            players.add(p2);
 
-    public void createPlayerAndComputer(Scanner sc) {
-        System.out.print("Name of player 1: ");
-        String input = sc.nextLine();
-        Player p1 = new Player(input, 0);
-        players.add(p1);
-
-        System.out.print("Name of player 2: X-O-Matic");
-        Player p2 = new Player("X-O-Matic", 0);
-        players.add(p2);
-        firstPlayer = players.get(0);
-        secondPlayer = players.get(1);
-        firstPlayer.setGamePiece('X');
-        secondPlayer.setGamePiece('O');
-        System.out.println();
-        System.out.println(firstPlayer.getName() + " starts the game using " + firstPlayer.getGamePiece());
-        currentPlayer = firstPlayer;
+        } else if (choice == 2) {
+            System.out.print("Name of player 2: ");
+            input = sc.nextLine();
+            Player p2 = new Player(input, 'O', 0);
+            secondPlayer = p2;
+            players.add(p2);
+        }
     }
 
     public void placeLetter(Player currentPlayer, char[][] board) {
@@ -148,36 +145,7 @@ public class Game {
         }
     }
 
-    public void playGameWithComputer(Scanner sc) {
-
-        createPlayerAndComputer(sc);
-        System.out.println();
-        rules();
-        System.out.println();
-        while (true) {
-            System.out.println("Tic-Tac-Toe, Let's Go!");
-            clearLists();
-            char[][] board = new Board().newBoard();
-            System.out.println("The board is now empty, where do you want to place your letter " + getCurrentPlayer() + " ?");
-            Board.printBoard(board);
-            while (true) {
-                placeLetter(getCurrentPlayer(), board);
-                String result = Game.checkWinner();
-                System.out.println(result);
-                if (!result.isEmpty()) {
-                    break;
-                }
-                switchPlayers();
-            }
-            if (!playAgain(sc)) {
-                break;
-            }
-        }
-
-
-    }
-
-    public void playGameTwoPlayers(Scanner sc) {
+    public void playGame(Scanner sc) {
 
         createPlayers(sc);
         System.out.println();
@@ -264,13 +232,16 @@ public class Game {
     }
 
     public void shufflePlayers() {
-        Collections.shuffle(players);
-        firstPlayer = players.get(0);
-        secondPlayer = players.get(1);
-        firstPlayer.setGamePiece('X');
-        secondPlayer.setGamePiece('O');
-        System.out.println(firstPlayer.getName() + " starts the game using " + firstPlayer.getGamePiece());
-        currentPlayer = firstPlayer;
+        List<Character> pieces = Arrays.asList('X', 'O');
+        Collections.shuffle(pieces);
+
+        firstPlayer.setGamePiece(pieces.get(0));
+        secondPlayer.setGamePiece(pieces.get(1));
+
+        currentPlayer = (firstPlayer.getGamePiece() == 'X') ? firstPlayer : secondPlayer;
+
+        System.out.println(currentPlayer.getName() + " starts the game using " + currentPlayer.getGamePiece());
+
     }
 
     public void switchPlayers() {
@@ -318,8 +289,6 @@ public class Game {
 
         return playAgain2;
     }
-
-
 
 }
 

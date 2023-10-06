@@ -4,9 +4,11 @@ public class Player {
     int numberOfWins = 0;
 
 
-    public Player(String name, int numberOfWins) {
+    public Player(String name, char letter, int numberOfWins) {
         this.name = name;
         this.numberOfWins = numberOfWins;
+        this.letter = letter;
+
     }
 
     public String getName() {
