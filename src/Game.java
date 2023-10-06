@@ -59,90 +59,17 @@ public class Game {
         currentPlayer = firstPlayer;
     }
 
-    public void computerPlaceLetter(Player currentPlayer, char[][] board) {
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-
-            int randomNumber;
-            Random random = new Random();
-            choice = randomNumber = random.nextInt(9) + 1;
-
-            if (choice >= 1 && choice <= 9) {
-                if (!posTaken(choice)) {
-                    if (currentPlayer.equals(firstPlayer)) {
-                        firstPlayerPositions.add(choice);
-                    } else if (currentPlayer.equals(secondPlayer)) {
-                        secondPlayerPositions.add(choice);
-                    }
-                    validMove = true;
-                    break;
-
-                }
-
-            }
-        }
-
-        switch (choice) {
-
-            case 1:
-                board[0][1] = currentPlayer.getGamePiece();
-                System.out.println();
-                Board.printBoard(board);
-                break;
-            case 2:
-                board[0][5] = currentPlayer.getGamePiece();
-                System.out.println();
-                Board.printBoard(board);
-                break;
-            case 3:
-                board[0][9] = currentPlayer.getGamePiece();
-                System.out.println();
-                Board.printBoard(board);
-                break;
-            case 4:
-                board[2][1] = currentPlayer.getGamePiece();
-                System.out.println();
-                Board.printBoard(board);
-                break;
-            case 5:
-                board[2][5] = currentPlayer.getGamePiece();
-                System.out.println();
-                Board.printBoard(board);
-                break;
-            case 6:
-                board[2][9] = currentPlayer.getGamePiece();
-                System.out.println();
-                Board.printBoard(board);
-                break;
-            case 7:
-                board[4][1] = currentPlayer.getGamePiece();
-                System.out.println();
-                Board.printBoard(board);
-                break;
-            case 8:
-                board[4][5] = currentPlayer.getGamePiece();
-                System.out.println();
-                Board.printBoard(board);
-                break;
-            case 9:
-                board[4][9] = currentPlayer.getGamePiece();
-                System.out.println();
-                Board.printBoard(board);
-                break;
-            default:
-                System.out.println("Incorrect enter! Please try again!");
-                validMove = false;
-                break;
-        }
-    }
-
     public void placeLetter(Player currentPlayer, char[][] board) {
         Scanner scanner = new Scanner(System.in);
+        int randomNumber;
+        Random random = new Random();
         while (true) {
             try {
-
-                choice = scanner.nextInt();
-
+                if (getCurrentPlayer().getName().equals("X-O-Matic")) {
+                    choice = randomNumber = random.nextInt(9) + 1;
+                } else {
+                    choice = scanner.nextInt();
+                }
                 if (choice >= 1 && choice <= 9) {
                     if (!posTaken(choice)) {
                         if (currentPlayer.equals(firstPlayer)) {
@@ -153,7 +80,7 @@ public class Game {
                         validMove = true;
                         break;
 
-                    } else {
+                    } if (!getCurrentPlayer().getName().equals("X-O-Matic")) {
                         System.out.println("Position already taken, please try again!");
                     }
 
@@ -226,6 +153,7 @@ public class Game {
         createPlayerAndComputer(sc);
         System.out.println();
         rules();
+        System.out.println();
         while (true) {
             System.out.println("Tic-Tac-Toe, Let's Go!");
             clearLists();
@@ -235,13 +163,6 @@ public class Game {
             while (true) {
                 placeLetter(getCurrentPlayer(), board);
                 String result = Game.checkWinner();
-                System.out.println(result);
-                if (!result.isEmpty()) {
-                    break;
-                }
-                switchPlayers();
-                computerPlaceLetter(getCurrentPlayer(), board);
-                result = Game.checkWinner();
                 System.out.println(result);
                 if (!result.isEmpty()) {
                     break;
