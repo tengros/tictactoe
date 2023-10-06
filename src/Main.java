@@ -36,19 +36,12 @@ public class Main {
                     choice = sc.nextInt();
                     sc.nextLine();
 
-                    switch (choice) {
-                        case 1:
-                            Game game = new Game(choice);
-                            game.playGame(sc);
-                            break;
-
-                        case 2:
-                            game = new Game(choice);
-                            game.playGame(sc);
-                            break;
+                    if (choice == 1 || choice == 2) {
+                        Game game = new Game(choice);
+                        game.playGame(sc);
+                        break;
                     }
-
-                    if (choice != 1 && choice != 2) {
+                    else {
                         System.out.println("Not a valid choice!");
                     }
                 } catch (InputMismatchException e) {
