@@ -7,7 +7,8 @@ public class Game {
     static ArrayList<Integer> firstPlayerPositions = new ArrayList<>();
     static ArrayList<Integer> secondPlayerPositions = new ArrayList<>();
 
-    public int choice;
+    private int input;
+    private int menuChoice;
     static Player firstPlayer;
     static Player secondPlayer;
     private Player currentPlayer;
@@ -16,8 +17,8 @@ public class Game {
     private ArrayList<Player> players;
 
 
-    public Game(int choice) {
-        this.choice = choice;
+    public Game(int menu) {
+        this.menuChoice = menu;
         players = new ArrayList<>();
     }
 
@@ -41,13 +42,13 @@ public class Game {
         firstPlayer = p1;
         players.add(p1);
 
-        if (choice == 1) {
+        if (menuChoice == 1) {
             System.out.print("Name of player 2: X-O-Matic");
             Player p2 = new Player("X-O-Matic", 'O', 0);
             secondPlayer = p2;
             players.add(p2);
 
-        } else if (choice == 2) {
+        } else if (menuChoice == 2) {
             System.out.print("Name of player 2: ");
             input = sc.nextLine();
             Player p2 = new Player(input, 'O', 0);
@@ -57,22 +58,22 @@ public class Game {
     }
 
     public void placeLetter(Player currentPlayer, char[][] board) {
-        Scanner scanner = new Scanner(System.in);
+
         int randomNumber;
         Random random = new Random();
         while (true) {
             try {
                 if (getCurrentPlayer().getName().equals("X-O-Matic")) {
-                    choice = randomNumber = random.nextInt(9) + 1;
+                    input = randomNumber = random.nextInt(9) + 1;
                 } else {
-                    choice = scanner.nextInt();
+                    input = sc.nextInt();
                 }
-                if (choice >= 1 && choice <= 9) {
-                    if (!posTaken(choice)) {
+                if (input >= 1 && input <= 9) {
+                    if (!posTaken(input)) {
                         if (currentPlayer.equals(firstPlayer)) {
-                            firstPlayerPositions.add(choice);
+                            firstPlayerPositions.add(input);
                         } else if (currentPlayer.equals(secondPlayer)) {
-                            secondPlayerPositions.add(choice);
+                            secondPlayerPositions.add(input);
                         }
                         validMove = true;
                         break;
@@ -87,54 +88,54 @@ public class Game {
 
             } catch (InputMismatchException e) {
                 System.out.println("Incorrect enter! Please try again!");
-                scanner.nextLine();
+                sc.nextLine();
             }
         }
 
-        switch (choice) {
+        switch (input) {
 
             case 1:
-                board[0][1] = currentPlayer.getGamePiece();
+                board[0][1] = currentPlayer.getLetter();
                 System.out.println();
                 Board.printBoard(board);
                 break;
             case 2:
-                board[0][5] = currentPlayer.getGamePiece();
+                board[0][5] = currentPlayer.getLetter();
                 System.out.println();
                 Board.printBoard(board);
                 break;
             case 3:
-                board[0][9] = currentPlayer.getGamePiece();
+                board[0][9] = currentPlayer.getLetter();
                 System.out.println();
                 Board.printBoard(board);
                 break;
             case 4:
-                board[2][1] = currentPlayer.getGamePiece();
+                board[2][1] = currentPlayer.getLetter();
                 System.out.println();
                 Board.printBoard(board);
                 break;
             case 5:
-                board[2][5] = currentPlayer.getGamePiece();
+                board[2][5] = currentPlayer.getLetter();
                 System.out.println();
                 Board.printBoard(board);
                 break;
             case 6:
-                board[2][9] = currentPlayer.getGamePiece();
+                board[2][9] = currentPlayer.getLetter();
                 System.out.println();
                 Board.printBoard(board);
                 break;
             case 7:
-                board[4][1] = currentPlayer.getGamePiece();
+                board[4][1] = currentPlayer.getLetter();
                 System.out.println();
                 Board.printBoard(board);
                 break;
             case 8:
-                board[4][5] = currentPlayer.getGamePiece();
+                board[4][5] = currentPlayer.getLetter();
                 System.out.println();
                 Board.printBoard(board);
                 break;
             case 9:
-                board[4][9] = currentPlayer.getGamePiece();
+                board[4][9] = currentPlayer.getLetter();
                 System.out.println();
                 Board.printBoard(board);
                 break;
@@ -212,10 +213,12 @@ public class Game {
 
         for (List<Integer> l : winning) {
             if (firstPlayerPositions.containsAll(l)) {
+                System.out.println();
                 System.out.println("Tic-Tac-Toe - " + firstPlayer.getName() + " won the game!");
                 firstPlayer.incrementNumberOfWins();
                 return "One more time, right?";
             } else if (secondPlayerPositions.containsAll(l)) {
+                System.out.println();
                 System.out.println("Tic-Tac-Toe - " + secondPlayer.getName() + " won the game!");
                 secondPlayer.incrementNumberOfWins();
                 return "One more time, right?";
@@ -232,15 +235,15 @@ public class Game {
     }
 
     public void shufflePlayers() {
-        List<Character> pieces = Arrays.asList('X', 'O');
-        Collections.shuffle(pieces);
+        List<Character> letters = Arrays.asList('X', 'O');
+        Collections.shuffle(letters);
 
-        firstPlayer.setGamePiece(pieces.get(0));
-        secondPlayer.setGamePiece(pieces.get(1));
+        firstPlayer.setLetter(letters.get(0));
+        secondPlayer.setLetter(letters.get(1));
 
-        currentPlayer = (firstPlayer.getGamePiece() == 'X') ? firstPlayer : secondPlayer;
+        currentPlayer = (firstPlayer.getLetter() == 'X') ? firstPlayer : secondPlayer;
 
-        System.out.println(currentPlayer.getName() + " starts the game using " + currentPlayer.getGamePiece());
+        System.out.println(currentPlayer.getName() + " starts the game using " + currentPlayer.getLetter());
 
     }
 

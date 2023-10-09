@@ -16,12 +16,12 @@ public class Player {
     }
 
 
-    public char getGamePiece() {
+    public char getLetter() {
         return letter;
     }
 
-    public void setGamePiece(char gamePiece) {
-        this.letter = gamePiece;
+    public void setLetter(char letter) {
+        this.letter = letter;
     }
 
     public void incrementNumberOfWins() {
