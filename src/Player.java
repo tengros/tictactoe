@@ -4,6 +4,7 @@ public class Player {
     int numberOfWins = 0;
 
 
+    // A player contains a name, a letter to play with and an int that tells how many times they won
     public Player(String name, char letter, int numberOfWins) {
         this.name = name;
         this.numberOfWins = numberOfWins;
@@ -24,6 +25,7 @@ public class Player {
         this.letter = letter;
     }
 
+   // Increase with 1 every time a player won the game
     public void incrementNumberOfWins() {
         numberOfWins++;
         System.out.println(getName() + " has won " + numberOfWins + " times :)");

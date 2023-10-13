@@ -4,6 +4,7 @@ public class Game {
 
     Scanner sc = new Scanner(System.in);
 
+    // Create lists of players' positions to later determine the winner.
     static ArrayList<Integer> firstPlayerPositions = new ArrayList<>();
     static ArrayList<Integer> secondPlayerPositions = new ArrayList<>();
 
@@ -17,15 +18,18 @@ public class Game {
     private ArrayList<Player> players;
 
 
+    // Initiates the game based on menu selection.
     public Game(int menu) {
         this.menuChoice = menu;
         players = new ArrayList<>();
     }
 
+   //Get the current player
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
 
+    // Tells if the position is taken or not.
     public static boolean posTaken(int position) {
         if (firstPlayerPositions.contains(position) || secondPlayerPositions.contains(position)) {
             return true;
@@ -34,6 +38,7 @@ public class Game {
         }
     }
 
+    // Create players based on the menu selection.
     public void createPlayers(Scanner sc) {
 
         System.out.print("Name of player 1: ");
@@ -57,6 +62,7 @@ public class Game {
         }
     }
 
+   // Method for place the letters and add them to the players positions.
     public void placeLetter(Player currentPlayer, char[][] board) {
 
         int randomNumber;
@@ -146,37 +152,7 @@ public class Game {
         }
     }
 
-    public void playGame(Scanner sc) {
-
-        createPlayers(sc);
-        System.out.println();
-        rules();
-        System.out.println();
-        while (true) {
-            shufflePlayers();
-            System.out.println("Tic-Tac-Toe, Let's Go!");
-            clearLists();
-            char[][] board = new Board().newBoard();
-            System.out.println("The board is now empty, where do you want to place your letter " + getCurrentPlayer() + " ?");
-            Board.printBoard(board);
-            while (true) {
-                placeLetter(getCurrentPlayer(), board);
-                String result = Game.checkWinner();
-                System.out.println(result);
-                if (!result.isEmpty()) {
-                    break;
-                }
-                switchPlayers();
-
-            }
-            if (!playAgain(sc)) {
-                break;
-            }
-        }
-
-
-    }
-
+    // Display the rules of the game
     public void rules() {
         System.out.println("""
                                       
@@ -191,6 +167,35 @@ public class Game {
                 """);
     }
 
+    // Create a list of letters, then shuffles the order of letters and set the player who gets X as the starting player.
+    public void shufflePlayers() {
+        List<Character> letters = Arrays.asList('X', 'O');
+        Collections.shuffle(letters);
+
+        firstPlayer.setLetter(letters.get(0));
+        secondPlayer.setLetter(letters.get(1));
+
+        currentPlayer = (firstPlayer.getLetter() == 'X') ? firstPlayer : secondPlayer;
+
+        System.out.println(currentPlayer.getName() + " starts the game using " + currentPlayer.getLetter());
+
+    }
+
+    // If it is a Valid move (true) then switch current player.
+    public void switchPlayers() {
+        if (validMove) {
+            if (currentPlayer == players.get(0)) {
+                currentPlayer = players.get(1);
+                System.out.println("Good move, now it's " + getCurrentPlayer() + "s turn!");
+            } else {
+                currentPlayer = players.get(0);
+                System.out.println("Good move, now it's " + getCurrentPlayer() + "s turn!");
+            }
+        }
+    }
+
+    // Define winning combinations, creates list of them and then check for winning combinations.
+    // The game goes on as long as there is not a draw, no winning combinations and the board not is ful.
     public static String checkWinner() {
         List<Integer> topRow = Arrays.asList(1, 2, 3);
         List<Integer> midRow = Arrays.asList(4, 5, 6);
@@ -211,6 +216,7 @@ public class Game {
         winning.add(cross1);
         winning.add(cross2);
 
+        // Check each winning combination
         for (List<Integer> l : winning) {
             if (firstPlayerPositions.containsAll(l)) {
                 System.out.println();
@@ -234,37 +240,14 @@ public class Game {
         return "";
     }
 
-    public void shufflePlayers() {
-        List<Character> letters = Arrays.asList('X', 'O');
-        Collections.shuffle(letters);
-
-        firstPlayer.setLetter(letters.get(0));
-        secondPlayer.setLetter(letters.get(1));
-
-        currentPlayer = (firstPlayer.getLetter() == 'X') ? firstPlayer : secondPlayer;
-
-        System.out.println(currentPlayer.getName() + " starts the game using " + currentPlayer.getLetter());
-
-    }
-
-    public void switchPlayers() {
-        if (validMove) {
-            if (currentPlayer == players.get(0)) {
-                currentPlayer = players.get(1);
-                System.out.println("Good move, now it's " + getCurrentPlayer() + "s turn!");
-            } else {
-                currentPlayer = players.get(0);
-                System.out.println("Good move, now it's " + getCurrentPlayer() + "s turn!");
-            }
-        }
-    }
-
+    // Clear the lists so the game is clean for a new game.
     public void clearLists() {
         firstPlayerPositions.clear();
         secondPlayerPositions.clear();
 
     }
 
+    // Asks if the players wants to play a new game
     public boolean playAgain(Scanner sc) {
         boolean playAgain2 = true;
         do {
@@ -291,6 +274,42 @@ public class Game {
         } while (!playAgain2);
 
         return playAgain2;
+    }
+
+  //Game flow codecd \\
+    public void playGame(Scanner sc) {
+
+        createPlayers(sc); //Create and set up the players
+        System.out.println();
+        rules(); // Display the game rules
+        System.out.println();
+
+        // The main game loop
+        while (true) {
+            shufflePlayers(); // Shuffle and set the orders of players
+            System.out.println("Tic-Tac-Toe, Let's Go!");
+            clearLists();
+            char[][] board = new Board().newBoard(); // Initialize the game board
+            System.out.println("The board is now empty, where do you want to place your letter " + getCurrentPlayer() + " ?");
+            Board.printBoard(board); // Print out empty game board
+
+            // The sub-game loop
+            while (true) {
+                placeLetter(getCurrentPlayer(), board);
+                String result = Game.checkWinner(); // Check if there is a winner or a draw and display the resuly
+                System.out.println(result);
+                if (!result.isEmpty()) {
+                    break; // If the game is over, break out the sub-game loop
+                }
+                switchPlayers(); //Switch to the next players turn
+
+            }
+            if (!playAgain(sc)) {
+                break; //Asks if the player wants to play again , and if not then exit the main loop.
+            }
+        }
+
+
     }
 
 }
