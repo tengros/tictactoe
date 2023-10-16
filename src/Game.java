@@ -24,7 +24,7 @@ public class Game {
         players = new ArrayList<>();
     }
 
-   //Get the current player
+    //Get the current player
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
@@ -62,7 +62,7 @@ public class Game {
         }
     }
 
-   // Method for place the letters and add them to the players positions.
+    // Method for place the letters and add them to the players positions.
     public void placeLetter(Player currentPlayer, char[][] board) {
 
         int randomNumber;
@@ -84,7 +84,8 @@ public class Game {
                         validMove = true;
                         break;
 
-                    } if (!getCurrentPlayer().getName().equals("X-O-Matic")) {
+                    }
+                    if (!getCurrentPlayer().getName().equals("X-O-Matic")) {
                         System.out.println("Position already taken, please try again!");
                     }
 
@@ -276,7 +277,7 @@ public class Game {
         return playAgain2;
     }
 
-  //Game flow codecd \\
+    //Game flow code
     public void playGame(Scanner sc) {
 
         createPlayers(sc); //Create and set up the players

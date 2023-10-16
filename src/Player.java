@@ -25,7 +25,7 @@ public class Player {
         this.letter = letter;
     }
 
-   // Increase with 1 every time a player won the game
+    // Increase with 1 every time a player won the game
     public void incrementNumberOfWins() {
         numberOfWins++;
         System.out.println(getName() + " has won " + numberOfWins + " times :)");
